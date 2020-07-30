@@ -5,7 +5,7 @@ exports.signUp = async function (req, res) {
   try {
     const { username, password, userType } = req.body;
     const user = await User.find({ username: username });
-    console.log(user);
+
     if (user.length > 0) {
       res.status(401).json({ message: "User already exists" });
     } else {
@@ -19,7 +19,6 @@ exports.signUp = async function (req, res) {
       res.status(200).json({ token, user_ });
     }
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: "Please try again later" });
   }
 };
@@ -32,7 +31,6 @@ exports.signIn = async function (req, res) {
     if (user.length == 0) {
       res.status(401).json({ message: "User does not exists" });
     } else {
-      console.log(user[0].password);
       const valid = await bcrypt.compare(password, user[0].password);
 
       if (valid) {
@@ -43,7 +41,6 @@ exports.signIn = async function (req, res) {
       }
     }
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: "Please try again later" });
   }
 };
@@ -58,13 +55,3 @@ exports.verify = async function (req, res) {
     res.status(400).json({ message: "Please try again later" });
   }
 };
-
-// exports.getType = async function (req, res) {
-//   try {
-//     const id = res.locals._id;
-//     const user = await User.find({ _id: id });
-//     res.status(200).json({ type: user.userType });
-//   } catch (err) {
-//     res.status(400).json({ message: "Please try again later" });
-//   }
-// };
